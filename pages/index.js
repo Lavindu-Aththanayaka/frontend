@@ -6,7 +6,7 @@ export default function Home({ products, error }) {
   return (
     <div className="container">
       <Nav />
-      <h1>Products</h1>
+      <h1>lavindu</h1>
       {error && <p className="error">Could not load products: {error}</p>}
       <div className="grid">
         {products.map((p) => (
