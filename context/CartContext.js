@@ -2,14 +2,13 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 const CartContext = createContext(null);
 const STORAGE_KEY = "ecommerce_cart";
-// A fixed demo user id, since this project doesn't implement authentication.
+
 export const DEMO_USER_ID = "demo-user";
 
 export function CartProvider({ children }) {
   const [items, setItems] = useState([]);
   const [loaded, setLoaded] = useState(false);
 
-  // Load any previously saved cart once the component mounts in the browser.
   useEffect(() => {
     const saved = window.localStorage.getItem(STORAGE_KEY);
     if (saved) {
@@ -22,7 +21,6 @@ export function CartProvider({ children }) {
     setLoaded(true);
   }, []);
 
-  // Persist the cart every time it changes.
   useEffect(() => {
     if (loaded) {
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
@@ -34,7 +32,9 @@ export function CartProvider({ children }) {
       const existing = prev.find((i) => i.productId === product.id);
       if (existing) {
         return prev.map((i) =>
-          i.productId === product.id ? { ...i, quantity: i.quantity + quantity } : i
+          i.productId === product.id
+            ? { ...i, quantity: i.quantity + quantity }
+            : i,
         );
       }
       return [
@@ -60,7 +60,9 @@ export function CartProvider({ children }) {
   const total = items.reduce((sum, i) => sum + i.quantity * i.unitPrice, 0);
 
   return (
-    <CartContext.Provider value={{ items, addItem, removeItem, clearCart, total }}>
+    <CartContext.Provider
+      value={{ items, addItem, removeItem, clearCart, total }}
+    >
       {children}
     </CartContext.Provider>
   );

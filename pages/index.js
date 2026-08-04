@@ -17,9 +17,6 @@ export default function Home({ products, error }) {
   );
 }
 
-// Server-side rendering: the product list is fetched on the server for
-// every request, which is what Next.js's SSR gives you over a plain
-// client-only React app.
 export async function getServerSideProps() {
   try {
     const products = await catalogApi.listProducts();

@@ -5,9 +5,6 @@ COPY package*.json ./
 RUN npm install
 COPY . .
 
-# NEXT_PUBLIC_* variables are baked into the JS bundle at BUILD time,
-# not read at container start time — so they must be passed as build
-# args here, not just as `environment:` in docker-compose.
 ARG NEXT_PUBLIC_CATALOG_API
 ARG NEXT_PUBLIC_ORDER_API
 ENV NEXT_PUBLIC_CATALOG_API=$NEXT_PUBLIC_CATALOG_API

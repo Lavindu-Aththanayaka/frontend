@@ -7,7 +7,7 @@ import { orderApi } from "../lib/api";
 export default function Checkout() {
   const { items, total, clearCart } = useCart();
   const router = useRouter();
-  const [status, setStatus] = useState("idle"); // idle | placing | success | error
+  const [status, setStatus] = useState("idle");
   const [message, setMessage] = useState("");
 
   async function handlePlaceOrder() {
@@ -25,13 +25,12 @@ export default function Checkout() {
       setMessage(`Order #${order.id} confirmed.`);
     } catch (err) {
       setStatus("error");
-      // 409 = one or more items are out of stock (returned by order-service,
-      // which found out by calling inventory-service).
-      // 502 = inventory-service could not be reached.
       if (err.status === 409) {
         setMessage("Sorry, one or more items just went out of stock.");
       } else if (err.status === 502) {
-        setMessage("Inventory service is unavailable right now. Please try again shortly.");
+        setMessage(
+          "Inventory service is unavailable right now. Please try again shortly.",
+        );
       } else {
         setMessage(err.message || "Something went wrong placing your order.");
       }
@@ -62,7 +61,11 @@ export default function Checkout() {
             </div>
           ))}
           <p className="total">Total: ${total.toFixed(2)}</p>
-          <button className="btn" onClick={handlePlaceOrder} disabled={status === "placing"}>
+          <button
+            className="btn"
+            onClick={handlePlaceOrder}
+            disabled={status === "placing"}
+          >
             {status === "placing" ? "Placing order..." : "Place order"}
           </button>
         </>
