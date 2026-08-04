@@ -36,7 +36,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    dockerImage = docker.build("${DOCKER_IMAGE}:${IMAGE_TAG}", "--build-arg NEXT_PUBLIC_CATALOG_API=http://localhost:8080 --build-arg NEXT_PUBLIC_ORDER_API=http://localhost:8082 .")
+                    dockerImage = docker.build("${DOCKER_IMAGE}:${IMAGE_TAG}", "--build-arg NEXT_PUBLIC_CATALOG_API=http://localhost:9080 --build-arg NEXT_PUBLIC_ORDER_API=http://localhost:9082 .")
                 }
             }
         }
@@ -77,7 +77,7 @@ pipeline {
                     docker rm -f ${SERVICE_NAME} 2>/dev/null || true
                     docker run -d --name ${SERVICE_NAME} \\
                         --network ${DOCKER_NET} \\
-                        -p 3000:3000 \\
+                        -p 9000:3000 \\
                         -e CATALOG_API_INTERNAL=http://catalog-service:8080 \\
                         -e ORDER_API_INTERNAL=http://order-service:8082 \\
                         --restart unless-stopped \\
@@ -107,7 +107,7 @@ pipeline {
                         docker rm -f ${SERVICE_NAME} 2>/dev/null || true
                         docker run -d --name ${SERVICE_NAME} \\
                             --network ${DOCKER_NET} \\
-                            -p 3000:3000 \\
+                            -p 9000:3000 \\
                         -e CATALOG_API_INTERNAL=http://catalog-service:8080 \\
                         -e ORDER_API_INTERNAL=http://order-service:8082 \\
                             --restart unless-stopped \\
